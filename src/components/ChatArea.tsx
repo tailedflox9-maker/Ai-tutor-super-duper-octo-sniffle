@@ -160,18 +160,24 @@ export function ChatArea({
           {allMessages.length === 0 ? (
             // State 2a: The selected conversation is empty.
             <div className="flex items-center justify-center h-full">
-              <div className="text-center p-4">
-                <div className="mb-4 flex justify-center">
-                  <div className="text-6xl animate-bounce-slow mb-4">
-                    🚀
+              <div className="text-center p-4 max-w-md mx-auto">
+                {/* Claude-inspired mobile layout */}
+                <div className="flex flex-col items-center gap-6">
+                  {/* Icon */}
+                  <div className="text-6xl sm:text-7xl filter drop-shadow-[0_0_20px_rgba(249,115,22,0.3)]">
+                    👨‍🚀
                   </div>
+
+                  {/* Greeting - time-based */}
+                  <h2 className="text-3xl sm:text-4xl font-medium text-[var(--color-text-primary)]">
+                    {(() => {
+                      const hour = new Date().getHours();
+                      if (hour < 12) return 'Good Morning';
+                      if (hour < 17) return 'Good Afternoon';
+                      return 'Good Evening';
+                    })()}
+                  </h2>
                 </div>
-                <h2 className="text-4xl sm:text-5xl font-bold text-[var(--color-text-primary)] mb-3">
-                  {conversation.title}
-                </h2>
-                <p className="text-lg text-[var(--color-text-secondary)]">
-                  Ready to learn? Ask your first question below.
-                </p>
               </div>
             </div>
           ) : (
