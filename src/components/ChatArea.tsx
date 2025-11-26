@@ -176,7 +176,7 @@ export function ChatArea({
             </div>
           ) : (
             // State 2b: The conversation has messages.
-            <div className="space-y-4 sm:space-y-6 py-4 sm:py-6">
+            <div className="space-y-6 sm:space-y-8 py-4 sm:py-6">
               {allMessages.map((message) => (
                 <MessageBubble
                   key={message.id}
