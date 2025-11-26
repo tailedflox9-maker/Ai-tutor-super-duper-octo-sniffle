@@ -398,6 +398,10 @@
     will-change: transform, opacity;
   }
 
+  .message-wrapper:hover {
+    /* Enable child hover transitions */
+  }
+
   .message-bubble {
     transition: all 0.2s ease-out;
     transform: translateZ(0);
