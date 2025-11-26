@@ -50,20 +50,20 @@ const CodeBlock = React.memo(({ language, children }: { language: string; childr
   }, [codeContent]);
 
   return (
-    <div className="relative my-2 text-sm will-change-transform">
+    <div className="relative my-3 text-sm will-change-transform rounded-lg overflow-hidden">
       <div className="absolute right-2 top-2 flex items-center gap-2 z-10">
-        <span className="text-xs text-gray-400 bg-gray-800 px-2 py-1 rounded">
+        <span className="text-[11px] text-gray-400 bg-gray-800/80 px-2.5 py-1 rounded font-medium">
           {language}
         </span>
         <button
           onClick={handleCopy}
-          className="interactive-button p-1.5 bg-gray-800 rounded hover:bg-gray-700 text-gray-300 transition-colors touch-target"
+          className="interactive-button p-1.5 bg-gray-800/80 rounded hover:bg-gray-700 text-gray-300 transition-colors touch-target"
           title={'Copy code'}
         >
           {copied ? (
-            <Check className="w-3 h-3" />
+            <Check className="w-3.5 h-3.5" />
           ) : (
-            <Copy className="w-3 h-3" />
+            <Copy className="w-3.5 h-3.5" />
           )}
         </button>
       </div>
@@ -71,7 +71,7 @@ const CodeBlock = React.memo(({ language, children }: { language: string; childr
         style={vscDarkPlus}
         language={language}
         PreTag="div"
-        className="!bg-[#121212] rounded-md !p-4 !pt-8"
+        className="!bg-[#1a1a1a] rounded-lg !p-4 !pt-10 border border-white/5"
       >
         {codeContent}
       </SyntaxHighlighter>
@@ -258,7 +258,7 @@ export function MessageBubble({
         );
       } else {
         return (
-          <code className="bg-[var(--color-bg)] px-1.5 py-0.5 rounded text-sm" {...props}>
+          <code className="bg-[#1a1a1a] px-2 py-0.5 rounded text-[13px] font-mono border border-white/10" {...props}>
             {children}
           </code>
         );
@@ -334,7 +334,11 @@ export function MessageBubble({
             </p>
           </div>
         ) : (
-          <div className={`prose prose-invert prose-sm sm:prose-base max-w-none leading-relaxed flex-1 ${isUser ? 'font-semibold' : 'font-normal'}`}>
+          <div className={`prose prose-invert max-w-none ${isUser ? 'prose-base' : 'prose-base'}`} style={{
+            fontSize: '15px',
+            lineHeight: '1.7',
+            fontWeight: isUser ? '600' : '400'
+          }}>
             <ReactMarkdown
               remarkPlugins={[remarkGfm, remarkMath]}
               rehypePlugins={[rehypeKatex]}
