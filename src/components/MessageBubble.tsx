@@ -6,7 +6,7 @@ import rehypeKatex from 'rehype-katex';
 import 'katex/dist/katex.min.css';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { Smile, Sparkles, Copy, Check, Edit2, RefreshCcw, Save, X, Bookmark, Download } from 'lucide-react';
+import { Sparkles, Copy, Check, Edit2, RefreshCcw, Save, X, Bookmark, Download } from 'lucide-react';
 import { Message } from '../types';
 
 interface MessageBubbleProps {
@@ -287,71 +287,86 @@ export function MessageBubble({
 
   return (
     <div
-      className={`message-wrapper flex gap-2 sm:gap-4 ${isUser ? 'justify-end' : 'justify-start'} transition-all duration-200 ease-out will-change-transform`}
+      className={`message-wrapper group flex gap-3 items-start transition-all duration-200 ease-out will-change-transform`}
     >
+      {/* AI Icon - Small and subtle */}
       {!isUser && (
-        <div className="flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center bg-[var(--color-card)] border border-white/10 shadow-[0_0_15px_rgba(59,130,246,0.2)] self-start mt-1">
-          <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-blue-400" />
+        <div className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center bg-[#2a2a2a] border border-white/5 mt-1">
+          <Sparkles className="w-3.5 h-3.5 text-blue-400" />
         </div>
       )}
 
-      <div className={`message-bubble relative group p-2.5 sm:p-4 rounded-xl min-h-[2.5rem] flex flex-col ${isUser ? 'nebula-gradient text-white shadow-lg' : 'glass-panel'}`}>
-        {!isUser && displayModel && (
-          <div className="text-[10px] sm:text-xs text-[var(--color-text-secondary)] mb-1 sm:mb-2 font-medium tracking-wide">
-            {displayModel}
-          </div>
-        )}
-
-        {isEditing ? (
-          <div className="space-y-3">
-            <textarea
-              ref={textareaRef}
-              value={editContent}
-              onChange={(e) => setEditContent(e.target.value)}
-              onKeyDown={handleKeyDown}
-              className="w-full min-w-72 min-h-[120px] p-3 border border-[var(--color-border)] rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[var(--color-bg)] text-[var(--color-text-primary)] font-normal"
-              placeholder={'Edit your message...'}
-            />
-            <div className="flex gap-2 justify-end">
-              <button
-                onClick={handleCancelEdit}
-                className="interactive-button flex items-center gap-1 px-3 py-1.5 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors text-sm touch-target"
-              >
-                <X className="w-3 h-3" />
-                Cancel
-              </button>
-              <button
-                onClick={handleSaveEdit}
-                className="interactive-button flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg transition-colors text-sm font-medium touch-target"
-                disabled={editContent.trim() === message.content || !editContent.trim()}
-              >
-                <Save className="w-3 h-3" />
-                Save
-              </button>
+      <div className={`flex-1 min-w-0 ${isUser ? 'ml-9' : ''}`}>
+        {/* User Icon - Small circle with letter */}
+        {isUser && (
+          <div className="flex items-center gap-3 mb-2">
+            <div className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center bg-[#2a2a2a] text-[11px] font-medium text-white/80">
+              F
             </div>
-            <p className="text-xs text-[var(--color-text-placeholder)]">
-              Press Ctrl+Enter to save, Escape to cancel
-            </p>
-          </div>
-        ) : (
-          <div className={`prose prose-invert max-w-none ${isUser ? 'prose-base' : 'prose-base'}`} style={{
-            fontSize: '15px',
-            lineHeight: '1.7',
-            fontWeight: isUser ? '600' : '400'
-          }}>
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm, remarkMath]}
-              rehypePlugins={[rehypeKatex]}
-              components={markdownComponents}
-            >
-              {message.content}
-            </ReactMarkdown>
-            {isStreaming && <StreamingIndicator />}
           </div>
         )}
 
+        {/* Message Content */}
+        <div className={`${isUser ? 'inline-block bg-[#2a2a2a] px-4 py-2.5 rounded-xl max-w-[85%]' : ''}`}>
+          {!isUser && displayModel && (
+            <div className="text-[10px] text-[var(--color-text-secondary)] mb-1.5 font-medium tracking-wide">
+              {displayModel}
+            </div>
+          )}
+
+          {isEditing ? (
+            <div className="space-y-3">
+              <textarea
+                ref={textareaRef}
+                value={editContent}
+                onChange={(e) => setEditContent(e.target.value)}
+                onKeyDown={handleKeyDown}
+                className="w-full min-w-72 min-h-[120px] p-3 border border-[var(--color-border)] rounded-lg resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-[var(--color-bg)] text-[var(--color-text-primary)] font-normal"
+                placeholder={'Edit your message...'}
+              />
+              <div className="flex gap-2 justify-end">
+                <button
+                  onClick={handleCancelEdit}
+                  className="interactive-button flex items-center gap-1 px-3 py-1.5 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)] transition-colors text-sm touch-target"
+                >
+                  <X className="w-3 h-3" />
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSaveEdit}
+                  className="interactive-button flex items-center gap-1 bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded-lg transition-colors text-sm font-medium touch-target"
+                  disabled={editContent.trim() === message.content || !editContent.trim()}
+                >
+                  <Save className="w-3 h-3" />
+                  Save
+                </button>
+              </div>
+              <p className="text-xs text-[var(--color-text-placeholder)]">
+                Press Ctrl+Enter to save, Escape to cancel
+              </p>
+            </div>
+          ) : (
+            <div className={`prose prose-invert max-w-none`} style={{
+              fontSize: '15px',
+              lineHeight: '1.7',
+              fontWeight: isUser ? '600' : '400',
+              color: isUser ? '#ffffff' : 'inherit'
+            }}>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm, remarkMath]}
+                rehypePlugins={[rehypeKatex]}
+                components={markdownComponents}
+              >
+                {message.content}
+              </ReactMarkdown>
+              {isStreaming && <StreamingIndicator />}
+            </div>
+          )}
+        </div>
+
+        {/* Action buttons - show on hover */}
         {!isEditing && !isStreaming && message.content.length > 0 && onEditMessage && (
-          <div className="absolute -bottom-2 -right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+          <div className="mt-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
             <ActionButtons
               isUser={isUser}
               onRegenerate={onRegenerateResponse ? handleRegenerate : undefined}
@@ -365,12 +380,6 @@ export function MessageBubble({
           </div>
         )}
       </div>
-
-      {isUser && (
-        <div className="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center nebula-gradient shadow-lg self-start">
-          <Smile className="w-4 h-4 text-white" />
-        </div>
-      )}
     </div>
   );
 }
